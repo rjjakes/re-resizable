@@ -66,7 +66,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 export type Direction = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
 
 export type OnStartCallback = (
-  e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+  e: React.MouseEvent<HTMLDivElement>,
   dir: Direction,
 ) => void;
 
@@ -89,9 +89,6 @@ export function Resizer(props: Props) {
         ...(props.replaceStyles || {}),
       }}
       onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => {
-        props.onResizeStart(e, props.direction);
-      }}
-      onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
         props.onResizeStart(e, props.direction);
       }}
     >

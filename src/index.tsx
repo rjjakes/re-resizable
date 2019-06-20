@@ -64,14 +64,14 @@ export interface HandleComponent {
 }
 
 export type ResizeCallback = (
-  event: MouseEvent | TouchEvent,
+  event: MouseEvent,
   direction: Direction,
   elementRef: HTMLDivElement,
   delta: NumberSize,
 ) => void;
 
 export type ResizeStartCallback = (
-  e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+  e: React.MouseEvent<HTMLDivElement>,
   dir: Direction,
   elementRef: HTMLDivElement,
 ) => void;
@@ -388,8 +388,6 @@ export class Resizable extends React.Component<ResizableProps, State> {
       window.addEventListener('mouseup', this.onMouseUp);
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseleave', this.onMouseUp);
-      window.addEventListener('touchmove', this.onMouseMove);
-      window.addEventListener('touchend', this.onMouseUp);
     }
   }
 
@@ -469,8 +467,6 @@ export class Resizable extends React.Component<ResizableProps, State> {
       window.removeEventListener('mouseup', this.onMouseUp);
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseleave', this.onMouseUp);
-      window.removeEventListener('touchmove', this.onMouseMove);
-      window.removeEventListener('touchend', this.onMouseUp);
       const parent = this.parentNode;
       if (!this.base || !parent) {
         return;
@@ -610,7 +606,7 @@ export class Resizable extends React.Component<ResizableProps, State> {
   }
 
   public onResizeStart(
-    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+    event: React.MouseEvent<HTMLDivElement>,
     direction: Direction,
   ) {
     let clientX = 0;
@@ -625,10 +621,8 @@ export class Resizable extends React.Component<ResizableProps, State> {
       if (event.nativeEvent.which === 3) {
         return;
       }
-    } else if (event.nativeEvent instanceof TouchEvent) {
-      clientX = event.nativeEvent.touches[0].clientX;
-      clientY = event.nativeEvent.touches[0].clientY;
     }
+
     if (this.props.onResizeStart) {
       if (this.resizable) {
         this.props.onResizeStart(event, direction, this.resizable);
@@ -665,13 +659,13 @@ export class Resizable extends React.Component<ResizableProps, State> {
     });
   }
 
-  public onMouseMove(event: MouseEvent | TouchEvent) {
+  public onMouseMove(event: MouseEvent) {
     if (!this.state.isResizing || !this.resizable) {
       return;
     }
     let { maxWidth, maxHeight, minWidth, minHeight } = this.props;
-    const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
-    const clientY = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY;
+    const clientX = event.clientX;
+    const clientY = event.clientY;
     const { direction, original, width, height } = this.state;
     const parentSize = this.getParentSize();
     const max = calculateNewMax(parentSize, maxWidth, maxHeight, minWidth, minHeight);
@@ -753,7 +747,7 @@ export class Resizable extends React.Component<ResizableProps, State> {
     }
   }
 
-  public onMouseUp(event: MouseEvent | TouchEvent) {
+  public onMouseUp(event: MouseEvent) {
     const { isResizing, direction, original } = this.state;
     if (!isResizing || !this.resizable) {
       return;
