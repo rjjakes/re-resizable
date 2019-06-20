@@ -615,7 +615,7 @@ export class Resizable extends React.Component<ResizableProps, State> {
   ) {
     let clientX = 0;
     let clientY = 0;
-    if (event.nativeEvent instanceof MouseEvent) {
+    if (event.nativeEvent) {
       clientX = event.nativeEvent.clientX;
       clientY = event.nativeEvent.clientY;
 
