@@ -50,7 +50,7 @@
     "@storybook/addon-options": "5.1.8",
     "@storybook/react": "5.1.8",
     "@types/node": "12.0.8",
-    "@types/react": "16.8.7",
+    "@types/react": "16.8.21",
     "@types/react-dom": "16.8.4",
     "@types/sinon": "7.0.13",
     "avaron": "0.2.0",
